@@ -1,0 +1,26 @@
+<html ng-app="bn.loadingPromise">
+<head>
+    <title>Demo1 - Use it without coding</title>
+</head>
+<script src="lib/angular.js"></script>
+<script src="../src/bnloadingpromise.js"></script>
+
+<body>
+    <div bn-promise-show="loading">
+        Loading <span bn-promise-show="loading"><img src="assets/ajax-loader.gif"> </span>
+    </div>
+    
+    <div bn-promise-hide="loading">
+        All the content loaded.
+    </div>
+    
+    <div style="width:680px;" bn-promise-show="success">
+        <img src="assets/01.jpg" bn-promise>
+        <img src="assets/02.jpg" bn-promise>
+        <img src="assets/03.jpg" bn-promise>
+        <img src="assets/04.jpg" bn-promise>
+    </div>
+
+</body>
+
+</html>

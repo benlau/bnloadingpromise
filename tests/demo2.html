@@ -1,0 +1,41 @@
+<html>
+<head>
+    <title>Demo2 Loading progress</title>
+</head>
+
+<script src="lib/angular.js"></script>
+<script src="../src/bnloadingpromise.js"></script>
+<script>
+
+function DemoController($scope,bnLoadingPromise) {   
+    var tracker = bnLoadingPromise.tracker($scope);
+    $scope.progress = tracker.progress();
+}
+
+var app = angular.module('demo',["bn.loadingPromise"]);
+
+angular.element(document).ready(function() {
+    angular.bootstrap(document,['demo']);
+});
+
+</script>
+
+<body ng-controller="DemoController">
+    <div >
+        Loading {{progress.step}} / {{progress.total}} <span bn-promise-show="loading"><img src="assets/ajax-loader.gif"> </span>
+    </div>
+    
+    <div bn-promise-hide="loading">
+        All the content loaded.
+    </div>
+    
+    <div style="width:680px;" bn-promise-show="success">
+        <img src="assets/01.jpg" bn-promise>
+        <img src="assets/02.jpg" bn-promise>
+        <img src="assets/03.jpg" bn-promise>
+        <img src="assets/04.jpg" bn-promise>
+    </div>
+
+</body>
+
+</html>
