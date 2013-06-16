@@ -33,8 +33,8 @@
             // Result of the promise. Possible values : ["success","error"]        
             this._result = null;
 
-            // Reson of fail. (It will set only if "error")
-            this._reason = null;
+            // Reason of fail. (It will set only if "error")
+            this._reason = [];
         }
         
         /** Return a progress object
@@ -80,20 +80,10 @@
             this._progress.total++;
             
             var p = promise.then(function() { // Reference: $q.all()
-                self._progress.step++; 
-                if (self._progress.step === self._progress.total) {
-                    self._state = "done";
-                    self._result = "success";
-                    self._defer.resolve();
-                }
-                self.refresh();
+                self._onPromiseThen();
             },function(reason) {
-                self._state = "done";
-                self._result = "error";
-                self._reason = reason;
-                
-                self._defer.reject(reason);
-                self.refresh();
+                self._reason.push(reason);
+                self._onPromiseThen();
             });
 
             this.refresh();
@@ -104,6 +94,23 @@
                 this._scope.$apply();            
             }
         };
+        
+        Tracker.prototype._onPromiseThen = function() {
+            var self = this;
+            
+            self._progress.step++; 
+            if (self._progress.step === self._progress.total) {
+                self._state = "done";
+                if (self._reason.length > 0) {
+                    self._result = "error";
+                    self._defer.reject();                                        
+                } else {
+                    self._result = "success";
+                    self._defer.resolve();
+                }
+            }
+            self.refresh();            
+        }
         
         return {
             /** Create or get the tracker assoicated with a scope
